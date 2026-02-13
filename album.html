@@ -389,12 +389,16 @@
         <section class="spread reveal">
             <div class="video-box editorial-video">
                 <div class="v-placeholder">
-                    <video 
-                        src="https://www.dropbox.com/scl/fi/d243ug3fdihztrchdw1eu/eyes.mp4?rlkey=4n6igzqwcra8bbvbifpzrrrlk&st=lya9ybu0&dl=0" 
-                        loop 
-                        playsinline 
-                        onclick="toggleVideo(this)">
-                    </video>
+                    <iframe 
+                        width="640" 
+                        height="360" 
+                        src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
+                        title="Video" 
+                        frameborder="0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen>
+                    </iframe>
+
                     <div class="video-overlay" onclick="toggleVideo(this.previousElementSibling)">
                         <div class="play-btn-minimal"></div>
                     </div>
