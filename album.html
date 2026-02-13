@@ -120,31 +120,13 @@
         .spread:nth-child(even) { direction: rtl; }
         
         /* --- NEW VIDEO BOX CSS --- */
-        .video-box { 
-            position: relative; 
-            border: 1px solid var(--matcha-dark); 
-            padding: 20px; 
-            background: white; 
-            box-shadow: 30px 30px 0px var(--matcha-dark); 
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+       .video-box { position: relative; border: 1px solid var(--matcha-dark); padding: 20px; background: white; box-shadow: 30px 30px 0px var(--matcha-dark); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+
         .video-box:hover { transform: scale(1.02); }
 
-        .v-placeholder { 
-            width: 100%; 
-            aspect-ratio: 4/5; 
-            background: var(--matcha-cream); 
-            position: relative; 
-            overflow: hidden; 
-        }
-        .v-placeholder video, .v-placeholder img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-            filter: sepia(15%) contrast(1.05);
-            transition: filter 0.5s ease;
-        }
+        .v-placeholder { width: 100%; aspect-ratio: 4/5; background: #000; position: relative; overflow: hidden; }
+
+       .v-placeholder iframe { width: 100%; height: 100%; border: none; }
         .video-box:hover video { filter: sepia(0%) contrast(1.1); }
 
         .video-overlay {
@@ -195,8 +177,8 @@
         .cinema-reel::-webkit-scrollbar { display: none; }
         .movie-card { flex: 0 0 300px; scroll-snap-align: center; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); filter: grayscale(40%); }
         .movie-card.playing { transform: scale(1.08); filter: grayscale(0%); }
-        .video-container { width: 100%; aspect-ratio: 9/16; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .video-container video { width: 100%; height: 100%; object-fit: cover; }
+       .video-container { width: 100%; aspect-ratio: 9/16; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
         .movie-info { margin-top: 25px; text-align: center; }
         .movie-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; }
         .movie-desc { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
@@ -206,24 +188,6 @@
             position: relative;
             cursor: pointer;
             overflow: hidden;
-        }
-
-        .video-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            transition: opacity 0.4s ease;
-            z-index: 2;
-        }
-
-        /* Hide overlay when the parent card has the .playing class */
-        .movie-card.playing .video-overlay {
-            opacity: 0;
-            pointer-events: none;
         }
 
         .movie-card.playing {
@@ -271,19 +235,19 @@
         </div>
         <div class="card-scatter" style="top:10%; right:12%; transform:rotate(8deg);">
             <div class="card-inner">
-                <div class="card-front"><img src="assets/firstmeet/fm15.jpg"></div>
+                <div class="card-front"><img src="/assets/firstmeet/fm15.jpg"></div>
                 <div class="card-back">"I love you, baby. And I mean it in the most sincere and pure way possible."</div>
             </div>
         </div>
         <div class="card-scatter" style="bottom:15%; left:15%; transform:rotate(-5deg);">
             <div class="card-inner">
-                <div class="card-front"><img src="assets/firstmeet/fm19.jpg"></div>
+                <div class="card-front"><img src="/assets/firstmeet/fm19.jpg"></div>
                 <div class="card-back">"This is not just a kiss. It is a promise — a quiet assurance that my feelings for you are real and sincere."</div>
             </div>
         </div>
         <div class="card-scatter" style="bottom:15%; right:15%; transform:rotate(10deg);">
             <div class="card-inner">
-                <div class="card-front"><img src="assets/firstmeet/fm20.jpg"></div>
+                <div class="card-front"><img src="/assets/firstmeet/fm20.jpg"></div>
                 <div class="card-back">Song of Solomon 4:7 <br>You are altogether beautiful, my love; there is no flaw in you.</div>
             </div>
         </div>
@@ -303,15 +267,15 @@
 
     <div class="film-wrap">
         <div class="film-strip">
-            <div class="film-frame"><img src="assets/firstmeet/fm.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm11.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm14.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm12.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm2.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm9.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm16.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm8.jpg"></div>
-            <div class="film-frame"><img src="assets/firstmeet/fm4.jpg"></div>  
+            <div class="film-frame"><img src="/assets/firstmeet/fm.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm11.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm14.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm12.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm2.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm9.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm16.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm8.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm4.jpg"></div>  
         </div>
     </div>
 
@@ -322,7 +286,7 @@
         </div>
 
         <div class="accordion-spread">
-            <div class="tile active"><img src="assets/firstmeet/fm11.jpg">
+            <div class="tile active"><img src="/assets/firstmeet/fm11.jpg">
                 <div class="tile-caption">Where it all began.</div>
                 <div class="accordion-content">
                         “Matagal na kitang gusto, pero during that time, everything felt different.
@@ -334,7 +298,7 @@
                         But even in that uncertainty, my heart knew one thing baby,na hindi ko kayang itago ang nararamdaman ko. Dahil ang dami ko nang naramdaman sa’yo, and somehow, deep inside, I already knew that you were special — more than I could ever put into words.”
                 </div>
             </div>
-            <div class="tile"><img src="assets/firstmeet/fm17.jpg">
+            <div class="tile"><img src="/assets/firstmeet/fm17.jpg">
                 <div class="tile-caption">Green light means go!</div>
                 <div class="accordion-content">
                         "During that time, I slowly realized that you were already giving me signs.
@@ -347,7 +311,7 @@
                         So when I finally saw the green light, I gathered all the courage I had and decided to take the risk or lose the chance. Because I knew that losing you without even trying would have been the greatest regret of my life."
                 </div>
             </div>
-            <div class="tile"><img src="assets/firstmeet/fm4.jpg">
+            <div class="tile"><img src="/assets/firstmeet/fm4.jpg">
                 <div class="tile-caption">Knowing you more.</div>
                 <div class="accordion-content">
                     “After that long vacation, walang araw na hindi kita namimiss. Each day felt incomplete pag wala ka. I found myself longing for your presence, your voice, and even our simplest conversations, kahit halos araw araw tayo magkausap sa phone.
@@ -362,7 +326,7 @@
                     And if given the chance, I would still choose you. Every single time.”
                 </div>
             </div>
-            <div class="tile"><img src="assets/firstmeet/fm18.jpg">
+            <div class="tile"><img src="/assets/firstmeet/fm18.jpg">
                 <div class="tile-caption">Courtship.</div>
                 <div class="accordion-content">
                     "As your suitor, every moment I spent with you wasn’t just time passing — it was my heart slowly realizing how much I wanted to fight for you. I wanted to show you, not just tell you, that I could be someone worthy of your love… someone deserving of your heart.
@@ -387,17 +351,9 @@
         </div>
 
         <section class="spread reveal">
-            <div class="video-box editorial-video">
+            <div class="video-box">
                 <div class="v-placeholder">
-                    <video 
-                        src="assets/videos/eyes.mp4" 
-                        loop 
-                        playsinline 
-                        onclick="toggleVideo(this)">
-                    </video>
-                    <div class="video-overlay" onclick="toggleVideo(this.previousElementSibling)">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                    <iframe src="https://drive.google.com/file/d/1td7t1r67he0T5UaHddbAup58l6Y4020-/preview"></iframe>
                 </div>
             </div>
             
@@ -414,17 +370,9 @@
         </section>
 
         <section class="spread reveal">
-            <div class="video-box editorial-video" style="box-shadow: -30px 30px 0px var(--matcha-mid);">
+            <div class="video-box" style="box-shadow: -30px 30px 0px var(--matcha-mid);">
                 <div class="v-placeholder">
-                    <video 
-                        src="assets/videos/ring.mp4" 
-                        loop 
-                        playsinline 
-                        onclick="toggleVideo(this)">
-                    </video>
-                    <div class="video-overlay" onclick="toggleVideo(this.previousElementSibling)">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                    <iframe src="https://drive.google.com/file/d/186YS_lbiqITlGaOfihK7fZkSo3DXT2h5/preview"></iframe>
                 </div>
             </div>
             <div class="letter-content" style="direction: ltr;">
@@ -451,11 +399,8 @@
         
         <div class="cinema-reel" id="videoReel">
             <div class="movie-card">
-                <div class="video-container" onclick="toggleCinemaVideo(this)">
-                    <video class="cinema-video" src="assets/videos/missme.mp4" playsinline loop></video>
-                    <div class="video-overlay">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                <div class="video-container">
+                    <iframe src="https://drive.google.com/file/d/1aVrMEjEALZihDSV_4xkpXJPlpYKj6AP8/preview"></iframe>
                 </div>
                 <div class="movie-info">
                     <p class="movie-title">You Miss Me</p>
@@ -464,11 +409,8 @@
             </div>
 
             <div class="movie-card">
-                <div class="video-container" onclick="toggleCinemaVideo(this)">
-                    <video class="cinema-video" src="assets/videos/goolauf.mp4" playsinline loop></video>
-                    <div class="video-overlay">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                <div class="video-container">
+                    <iframe src="https://drive.google.com/file/d/1dRjQB3ibNaSbt9g8B7jverRbonX4xGGx/preview"></iframe>
                 </div>
                 <div class="movie-info">
                     <p class="movie-title">You Feel Sad</p>
@@ -477,11 +419,8 @@
             </div>
 
             <div class="movie-card">
-                <div class="video-container" onclick="toggleCinemaVideo(this)">
-                    <video class="cinema-video" src="assets/videos/infight.mp4" playsinline loop></video>
-                    <div class="video-overlay">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                <div class="video-container">
+                    <iframe src="https://drive.google.com/file/d/1hu30X3XBKodKhgGRghRLBTdSaM4D1oJw/preview"></iframe>
                 </div>
                 <div class="movie-info">
                     <p class="movie-title">We Argue</p>
@@ -490,11 +429,8 @@
             </div>
 
             <div class="movie-card">
-                <div class="video-container" onclick="toggleCinemaVideo(this)">
-                    <video class="cinema-video" src="assets/videos/far.mp4" playsinline loop></video>
-                    <div class="video-overlay">
-                        <div class="play-btn-minimal"></div>
-                    </div>
+                <div class="video-container">
+                    <iframe src="https://drive.google.com/file/d/1KY_T6EIBE1ALnidJitMl-A9eCT6aCfmq/preview"></iframe>
                 </div>
                 <div class="movie-info">
                     <p class="movie-title">We Are Apart</p>
