@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Have a Question... 🌹</title>
+    <link rel="stylesheet" href="CSS/base.css">
+</head>
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              0 0 0 35 -15"
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Cursor -->
+    <div id="cursor" class="Cursor"></div>
+
+
+    <div class="container">
+        <div id="ask-container">
+            <img id="mainGif" src="assets/peach-goma.gif" alt="Cute Cat" class="gif">
+            <h1 id="questionText">Baby, will you be my Valentine? 🌹</h1>
+            <div class="btn-group">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="answer-container" class="hidden">
+            <img src="assets/happy-valentines-day.gif" alt="Happy Cat" class="gif">
+            <h1>Yay! I love you babyyyy!!! 💘💘💘</h1>
+            <p style="color:#A8C66C;">Wait ka lang bi may surprise ako mwaaaaaaaaaaaaaa… 💕</p>
+        </div>
+    </div>
+
+    <script src="javaScripts/base.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+:root {
+    --matcha: #A8C66C;
+    --soft-matcha: #CDE6B5;
+    --white: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--soft-matcha);
+    font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
+    overflow: hidden;
+}
+
+*{
+    cursor: none;
+}
+
+body, button, a, input {
+    cursor: none;
+}
+
+.container {
+    text-align: center;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 450px;
+    width: 90%;
+}
+
+.gif {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--matcha);
+    font-size: 24px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#yesBtn {
+    background-color: var(--matcha);
+    color: white;
+}
+
+
+
+#noBtn {
+    background-color: #ced4da;
+    color: #495057;
+    position: fixed;
+    z-index: 1000;
+    left: 55%;
+    top: 65%;
+}
+
+.hidden {
+    display: none;
+}
+
+.Cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  filter: url("#goo");
+  mix-blend-mode: difference;
+}
+
+.Cursor span {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: #ffffff;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
+}

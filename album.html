@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUREN HAPPY VALENTINE'S DAY!</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=Montserrat:wght@300;600&family=Libre+Barcode+39&family=Six+Caps&family=Caveat&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --matcha-dark: #2D3921; 
+            --matcha-mid: #4A5D3F;  
+            --matcha-cream: #E8E3D5; 
+            --lily-white: #ffffff;
+            --accent-red: #bc1823;   
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--matcha-cream); 
+            color: var(--matcha-dark); 
+            font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden;
+            transition: color 0.5s ease;
+        }
+
+        /* --- Audio Control UI --- */
+        #music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            background: var(--matcha-dark);
+            color: var(--matcha-cream);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid var(--matcha-cream);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.2rem;
+        }
+
+        /* --- Enhanced Lily Petals --- */
+        .petal {
+            position: fixed;
+            background: var(--lily-white);
+            border-radius: 150% 0 150% 0;
+            opacity: 0.65; 
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
+        }
+
+        /* --- Flippable Scattered Polaroids --- */
+        .card-scatter {
+            position: absolute; width: 230px; height: 260px;
+            perspective: 1000px; cursor: pointer; z-index: 15;
+        }
+        .card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .card-scatter:hover .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border: 8px solid white;
+            box-shadow: 5px 10px 20px rgba(0,0,0,0.1); border-bottom: 25px solid white;
+        }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; }
+        .card-back {
+            background: var(--matcha-mid); color: var(--matcha-cream); transform: rotateY(180deg);
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px; font-family: 'Caveat', cursive; font-size: 1.3rem; text-align: center;
+        }
+
+        /* --- Welcome Note --- */
+        #welcome-note {
+            position: fixed; inset: 0; background: var(--matcha-dark); z-index: 10000;
+            display: flex; align-items: center; justify-content: center; color: var(--matcha-cream);
+            cursor: pointer; 
+            transition: opacity 1.5s ease, visibility 1.5s;
+        }
+
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 2;}
+        .mag-title { font-family: 'Six Caps', sans-serif; font-size: clamp(10rem, 25vw, 20rem); line-height: 0.8; color: var(--matcha-dark); }
+        .issue-tag { background: var(--accent-red); color: var(--matcha-cream); padding: 5px 25px; font-size: 0.8rem; letter-spacing: 5px; margin-top: -20px; }
+
+        .film-wrap { background: #1a1d17; padding: 45px 0; overflow: hidden; position: relative; border-top: 2px solid var(--matcha-mid); border-bottom: 2px solid var(--matcha-mid); z-index: 2;}
+        .film-strip { display: flex; gap: 20px; width: max-content; animation: slide 25s linear infinite; }
+        .film-frame { 
+            width: 260px; height: 190px; background: #222; 
+            border-left: 12px solid transparent; border-right: 12px solid transparent;
+            background-image: radial-gradient(circle, var(--matcha-cream) 15%, transparent 15%);
+            background-size: 18px 18px; background-position: center 5px, center calc(100% - 5px); background-repeat: repeat-x;
+        }
+        .film-frame img { width: 100%; height: 80%; object-fit: cover; margin-top: 20px; filter: contrast(1.1); }
+        @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .accordion-spread { display: flex; gap: 15px; height: 650px; margin: 80px 0; padding: 0 5%; position: relative; z-index: 2; align-items: stretch; }
+        .tile { flex: 1; position: relative; overflow: hidden; cursor: pointer; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); border: 1px solid var(--matcha-dark); border-radius: 12px; background: #1a1d17; }
+        .tile.active { flex: 10; cursor: default; }
+        .tile img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.25, 1, 0.5, 1); opacity: 0.7; transform: scale(1.1); }
+        .tile.active img { opacity: 0.3; filter: saturate(1.2) contrast(1.1); transform: scale(1); }
+        .tile-caption { position: absolute; top: 30px; left: 30px; color: var(--matcha-cream); background: var(--matcha-dark); padding: 10px 25px; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; z-index: 10; transition: 0.4s; letter-spacing: 1px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .tile.active .tile-caption { background: var(--accent-red); }
+        .accordion-content { position: absolute; bottom: 30px; left: 30px; right: 30px; top: 100px; color: var(--matcha-cream); font-family: 'Montserrat', sans-serif; font-size: 0.95rem; line-height: 1.8; opacity: 0; transform: translateY(30px); transition: all 0.6s ease 0.4s; overflow-y: auto; padding-right: 15px; font-style: italic; }
+        .tile.active .accordion-content { opacity: 1; transform: translateY(0); }
+
+        .editorial-container { padding: 120px 10%; position: relative; z-index: 2;}
+        .spread { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; margin-bottom: 180px; align-items: center; position: relative; }
+        .spread:nth-child(even) { direction: rtl; }
+        
+        /* --- NEW VIDEO BOX CSS --- */
+        .video-box { 
+            position: relative; 
+            border: 1px solid var(--matcha-dark); 
+            padding: 20px; 
+            background: white; 
+            box-shadow: 30px 30px 0px var(--matcha-dark); 
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .video-box:hover { transform: scale(1.02); }
+
+        .v-placeholder { 
+            width: 100%; 
+            aspect-ratio: 4/5; 
+            background: var(--matcha-cream); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .v-placeholder video, .v-placeholder img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block;
+            filter: sepia(15%) contrast(1.05);
+            transition: filter 0.5s ease;
+        }
+        .video-box:hover video { filter: sepia(0%) contrast(1.1); }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+            z-index: 5;
+        }
+        .video-box.playing .video-overlay { opacity: 0; pointer-events: none; }
+
+        .play-btn-minimal {
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 30px solid var(--matcha-cream);
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+        .video-overlay:hover .play-btn-minimal { transform: translateX(5px) scale(1.2); }
+        
+        .cute-note { font-family: 'Caveat', cursive; color: var(--accent-red); font-size: 2rem; margin-bottom: 10px; display: block; }
+
+        /* --- Cinema Section --- */
+        .cinema-section {
+            position: relative; padding: 120px 0; background: #11130f; color: var(--matcha-cream); z-index: 3;
+        }
+        .film-grain {
+            position: absolute; inset: 0; background-image: url("https://media.giphy.com/media/oEI9uWUicLpTzC23N1/giphy.gif");
+            opacity: 0.04; pointer-events: none; z-index: 10; mix-blend-mode: overlay;
+        }
+        .cinema-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 11; padding: 0 10%; }
+        .play-all-btn {
+            background: var(--accent-red); color: white; border: none; padding: 12px 30px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; letter-spacing: 3px; cursor: pointer; border-radius: 50px; margin-top: 20px; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(188, 24, 35, 0.4);
+        }
+        .play-all-btn:hover { transform: scale(1.05); }
+        .cinema-reel {
+            display: flex; gap: 40px; overflow-x: auto; padding: 40px 10%; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth;
+        }
+        .cinema-reel::-webkit-scrollbar { display: none; }
+        .movie-card { flex: 0 0 300px; scroll-snap-align: center; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); filter: grayscale(40%); }
+        .movie-card.playing { transform: scale(1.08); filter: grayscale(0%); }
+        .video-container { width: 100%; aspect-ratio: 9/16; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .video-container video { width: 100%; height: 100%; object-fit: cover; }
+        .movie-info { margin-top: 25px; text-align: center; }
+        .movie-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; }
+        .movie-desc { font-size: 0.8rem; opacity: 0.6; margin-top: 5px; }
+        .theatre-label { font-family: 'Libre Barcode 39'; font-size: 3.5rem; opacity: 0.2; }
+        /* Individual Video Controls */
+        .video-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+        }
+
+        /* Hide overlay when the parent card has the .playing class */
+        .movie-card.playing .video-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .movie-card.playing {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .play-btn-minimal {
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            transform: translateX(5px);
+        }
+        /* --- Final Envelope --- */
+        .final-remark { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #dfd9cb; }
+        #explosion-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
+        .envelope { width: 320px; height: 210px; background: var(--matcha-dark); position: relative; cursor: pointer; z-index: 10; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .lid { position: absolute; top: 0; left: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid #1e2616; transform-origin: top; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .envelope.open .lid { transform: rotateX(180deg); }
+        .letter { position: absolute; width: 280px; left: 20px; bottom: 10px; background: var(--matcha-cream); padding: 30px; transition: 0.5s; opacity: 0; text-align: center; border: 1px solid #ccc; z-index: 9; }
+        .envelope.open .letter { transform: translateY(-200px); opacity: 1; }
+        .exp-photo { position: absolute; width: 130px; height: 160px; border: 8px solid white; left: 45%; top: 40%; opacity: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-bottom: 30px solid white; }
+
+        .barcode { font-family: 'Libre Barcode 39'; font-size: 5rem; opacity: 0.15; text-align: center; padding: 60px 0; color: var(--matcha-dark); }
+        .floating-deco { position: absolute; font-family: 'Caveat', cursive; font-size: 1.6rem; color: var(--matcha-mid); opacity: 0.5; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="assets/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-toggle" onclick="toggleMusic()">🔇</div>
+
+    <div id="welcome-note" onclick="unwrapped()">
+        <div class="card-scatter" style="top:15%; left:8%; transform:rotate(-12deg);">
+            <div class="card-inner">
+                <div class="card-front"><img src="assets/firstmeet/fm7.jpg"></div>
+                <div class="card-back">"Hold my hand and never let go."</div>
+            </div>
+        </div>
+        <div class="card-scatter" style="top:10%; right:12%; transform:rotate(8deg);">
+            <div class="card-inner">
+                <div class="card-front"><img src="/assets/firstmeet/fm15.jpg"></div>
+                <div class="card-back">"I love you, baby. And I mean it in the most sincere and pure way possible."</div>
+            </div>
+        </div>
+        <div class="card-scatter" style="bottom:15%; left:15%; transform:rotate(-5deg);">
+            <div class="card-inner">
+                <div class="card-front"><img src="/assets/firstmeet/fm19.jpg"></div>
+                <div class="card-back">"This is not just a kiss. It is a promise — a quiet assurance that my feelings for you are real and sincere."</div>
+            </div>
+        </div>
+        <div class="card-scatter" style="bottom:15%; right:15%; transform:rotate(10deg);">
+            <div class="card-inner">
+                <div class="card-front"><img src="/assets/firstmeet/fm20.jpg"></div>
+                <div class="card-back">Song of Solomon 4:7 <br>You are altogether beautiful, my love; there is no flaw in you.</div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <p class="barcode" style="opacity: 1; color: var(--matcha-cream);">NUREN ILYSM!</p>
+            <h2 style="font-family: 'Playfair Display'; font-style: italic; font-size: 2.8rem;">NUREN</h2>
+            <h2 style="font-size: 1.5rem; padding-top: 10px;">"Unauthorized Access is Prohibited!"</h2>
+            <p style="margin-top: 25px; letter-spacing: 8px; font-size: 0.7rem; border: 1px solid white; padding: 10px; display: inline-block;">TAP TO UNWRAP</p>
+        </div>
+    </div>
+
+    <header>
+        <h1 class="mag-title">NUREN</h1>
+        <div class="issue-tag">HAPPY HEART'S DAY!</div>
+    </header>
+
+    <div class="film-wrap">
+        <div class="film-strip">
+            <div class="film-frame"><img src="/assets/firstmeet/fm.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm11.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm14.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm12.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm2.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm9.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm16.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm8.jpg"></div>
+            <div class="film-frame"><img src="/assets/firstmeet/fm4.jpg"></div>  
+        </div>
+    </div>
+
+    <main class="editorial-container">
+        <div style="text-align:center; margin-bottom:50px;">
+            <span class="cute-note" style="color: var(--matcha-dark);">"A memory to remember."</span>
+            <p style="letter-spacing: 4px; font-size: 0.7rem; opacity: 0.7;">CLICK EACH IMAGES TO VIEW MY MESSAGE.</p>
+        </div>
+
+        <div class="accordion-spread">
+            <div class="tile active"><img src="/assets/firstmeet/fm11.jpg">
+                <div class="tile-caption">Where it all began.</div>
+                <div class="accordion-content">
+                        “Matagal na kitang gusto, pero during that time, everything felt different.
+                        Dito tayo unang nagkausap, at dito ko naramdaman nang mas malalim kung gaano kita talaga kagusto. Every word, every glance, every laugh — it left a mark on my heart that I couldn’t ignore.
+                        <br><br>
+                        I didn’t know what to do. Kung sasabihin ko ba sa’yo ang nararamdaman ko, o itatago ko na lang sa sarili ko. Natatakot ako… natatakot akong baka hindi mo ako nakikita the way I see you.
+                        And honestly, I felt that it was valid kasi sino ba naman ako para mag-expect?
+                        <br><br>
+                        But even in that uncertainty, my heart knew one thing baby,na hindi ko kayang itago ang nararamdaman ko. Dahil ang dami ko nang naramdaman sa’yo, and somehow, deep inside, I already knew that you were special — more than I could ever put into words.”
+                </div>
+            </div>
+            <div class="tile"><img src="/assets/firstmeet/fm17.jpg">
+                <div class="tile-caption">Green light means go!</div>
+                <div class="accordion-content">
+                        "During that time, I slowly realized that you were already giving me signs.
+                        However, I was afraid to take them seriously… baka kasi maling akala lang ako. I did not want to assume something that was not truly there.
+                        <br><br>
+                        In my mind, I kept telling myself that I was out of your league. Hindi naman ako gwapo, at hindi rin ako mayaman. I questioned if I was even worthy of someone like you.
+                        <br><br>
+                        Yet despite all those doubts and insecurities, you still chose me. And that is something I will never take for granted.
+                        <br><br>
+                        So when I finally saw the green light, I gathered all the courage I had and decided to take the risk or lose the chance. Because I knew that losing you without even trying would have been the greatest regret of my life."
+                </div>
+            </div>
+            <div class="tile"><img src="/assets/firstmeet/fm4.jpg">
+                <div class="tile-caption">Knowing you more.</div>
+                <div class="accordion-content">
+                    “After that long vacation, walang araw na hindi kita namimiss. Each day felt incomplete pag wala ka. I found myself longing for your presence, your voice, and even our simplest conversations, kahit halos araw araw tayo magkausap sa phone.
+                    <br><br>
+                    As I continued getting to know you more, I realized that what I felt was no longer just admiration. Hindi na lang siya simpleng pagkagusto o crush crush lang. I was slowly and sincerely falling in love with you.
+                    <br><br>
+                    You are beautiful — not only in appearance, but in the way you think, the way you speak, and the way you treat people. You are intelligent, kind, and truly rare. A complete package.
+                    Oo, may kasungitan ka minsan — madalas? Palagi? But even that became something I learned to appreciate. Because it is part of who you are.
+                    <br><br>
+                    Loving you is not just about embracing your strengths and your gentle side. It is about accepting and loving every part of you — wholeheartedly yung buong buo and without hesitation.
+                    <br><br>
+                    And if given the chance, I would still choose you. Every single time.”
+                </div>
+            </div>
+            <div class="tile"><img src="/assets/firstmeet/fm18.jpg">
+                <div class="tile-caption">Courtship.</div>
+                <div class="accordion-content">
+                    "As your suitor, every moment I spent with you wasn’t just time passing — it was my heart slowly realizing how much I wanted to fight for you. I wanted to show you, not just tell you, that I could be someone worthy of your love… someone deserving of your heart.
+                    <br><br>
+                    I gave you my best — even on the days I doubted if my best would ever be enough. I questioned myself quietly,  if I was the kind of man you truly deserved I believe you deserve someone better that's why I keep pushing myself to be better.
+                    <br><br>
+                    Every effort, every small gesture, every silent prayer at night… it was all for you. Because you are worth everything. And loving you is the most certain thing I have ever done."
+                </div>
+            </div>
+            <div class="tile"><img src="assets/firstmeet/front.jpg">
+                <div class="tile-caption">You said "YES".</div>
+                <div class="accordion-content">
+                    "It was a quiet night during vacation nagtampuhan ba naman eh. January 15, 1:05 AM. We were having a tampuhan. Every word unsaid, every moment of silence… it hurt. But somehow, in that painful stillness, we found each other again. We talked. We fixed things. And in that moment, I realized something I had always known deep inside: we love each other too much to ever let go.
+                     <br><br>                   
+                    Then you said “yes.” I froze yung tipong para akog sabog. Time seemed to stop na para bang di ako makapaniwala. My heart was pounding so fast I thought it would burst (OA). I couldn’t even believe, I didn’t even realize at first that you were answering me. And then it hit me — you chose me. Out of everyone, you chose me.
+                    <br><br>
+                    Since that night, I’ve loved you in a way I never knew I could. I’ve become more faithful, more patient, more devoted. Every thought, every beat of my heart, is proof that I want to spend my life showing you that your choice wasn’t a mistake.
+                    <br><br>
+                    I will love you — unshakable, unstoppable — hanggang sa huling hininga ko. And even then, my heart would still whisper your name."
+                </div>
+            </div>
+        </div>
+
+        <section class="spread reveal">
+            <div class="video-box editorial-video">
+                <div class="v-placeholder">
+                    <video 
+                        src="assets/videos/eyes.mp4" 
+                        loop 
+                        playsinline 
+                        onclick="toggleVideo(this)">
+                    </video>
+                    <div class="video-overlay" onclick="toggleVideo(this.previousElementSibling)">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="letter-content">
+                <span class="cute-note">Through Your Eyes</span>
+                <h2 style="font-family: 'Playfair Display'; color: var(--matcha-dark); font-size: 3.5rem;">You Make Me Feel Alive</h2>
+                <p style="line-height: 2; margin-top: 25px; font-weight: 500; color: var(--lily-white);">"Your eyes is my favorite part of you. I could tell what you think by just looking at it. Baby, your eyes is so expressive to the point na kapag nalulungkot ka madali ko itong nararamdaman.
+                        <br><br>
+                        Hindi ko alam kung anong mayroon sa mata mo pero sa tuwing tinititigan kita para nila akong hinihila, it make me crave for you. You saw me as someone you can trust, you can love. Kaya siguro maganda mata mo kasi mahilig ka sa kalabasa? WHAHAHAHA
+                        <br><br>
+                        But kidding aside, di man kasing linaw ng mata mo ang mata ko malinaw naman sakin na ikaw lang ang mahal ko. I love you baby from the bottom of my hypothalamus."
+                </p>
+            </div>
+        </section>
+
+        <section class="spread reveal">
+            <div class="video-box editorial-video" style="box-shadow: -30px 30px 0px var(--matcha-mid);">
+                <div class="v-placeholder">
+                    <video 
+                        src="assets/videos/ring.mp4" 
+                        loop 
+                        playsinline 
+                        onclick="toggleVideo(this)">
+                    </video>
+                    <div class="video-overlay" onclick="toggleVideo(this.previousElementSibling)">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="letter-content" style="direction: ltr;">
+                <span class="cute-note">A Promise & a Ring</span>
+                <h2 style="font-family: 'Playfair Display'; color: var(--matcha-dark); font-size: 3.5rem;">A vow to love you today, tomorrow, and always.</h2>
+                <p style="line-height: 2; margin-top: 25px; font-weight: 500; color: var(--lily-white);">"Remember I gave you ring, nakakatawa na nakakaiyak. Akala ko palpak ang plano ko, the ring was too big. But you know what? It doesn't matter. The way you reacted on the situation already made my day. The way you handle me during that breakdown, doon ko napagtanto na nasa tamang tao ako.
+                        <br><br>
+                        Maybe I failed to deliver with a perfect ring, but you made that moment a perfect one. What could I ever ask for? Baby, since that day that you received that gift, it is clear to me na ikaw na ang hinahanap ko. 
+                        <br><br>
+                        It was not just a ring—it was a promise that one day papakasalan kita. Di ba sabi ko papalitan ko yan? For now tiis ka muna, let's take our time. I'll marry you one day that's my promise.."
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <section class="cinema-section">
+        <div class="film-grain"></div>
+        <div class="cinema-header">
+            <span class="theatre-label">NOW SHOWING</span>
+            <span class="cute-note">Our Private Screening</span>
+            <h2 style="font-family: 'Playfair Display'; font-size: 3rem;">Moments in Motion</h2>
+            <button class="play-all-btn" onclick="playAllVideos()">PLAY ALL MEMORIES</button>
+        </div>
+        
+        <div class="cinema-reel" id="videoReel">
+            <div class="movie-card">
+                <div class="video-container" onclick="toggleCinemaVideo(this)">
+                    <video class="cinema-video" src="assets/videos/missme.mp4" playsinline loop></video>
+                    <div class="video-overlay">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <p class="movie-title">You Miss Me</p>
+                    <p class="movie-desc">Always remember, we spend our quality time like this — moments that I will cherish forever.</p>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <div class="video-container" onclick="toggleCinemaVideo(this)">
+                    <video class="cinema-video" src="assets/videos/goolauf.mp4" playsinline loop></video>
+                    <div class="video-overlay">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <p class="movie-title">You Feel Sad</p>
+                    <p class="movie-desc">If ever you feel sad, just watch this video and smile. Life is too short to stay sad — so be silly with me.</p>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <div class="video-container" onclick="toggleCinemaVideo(this)">
+                    <video class="cinema-video" src="assets/videos/infight.mp4" playsinline loop></video>
+                    <div class="video-overlay">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <p class="movie-title">We Argue</p>
+                    <p class="movie-desc">Whenever we argue, please remember to stay calm and breathe. Our love has lasted this long for a reason — let’s come back to each other, baby, and make things right.</p>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <div class="video-container" onclick="toggleCinemaVideo(this)">
+                    <video class="cinema-video" src="assets/videos/far.mp4" playsinline loop></video>
+                    <div class="video-overlay">
+                        <div class="play-btn-minimal"></div>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <p class="movie-title">We Are Apart</p>
+                    <p class="movie-desc">Even when we’re apart, know that I’m always with you in heart. I miss you deeply, and I treasure every moment I get to spend with you — no distance can change that.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-remark">
+        <span class="floating-deco" style="top:15%; left:15%;">I hope you enjoy my little gift. <br>
+                                                                                                  I know it’s not much, but I gave it with all my love, <br> 
+                                                                                                  hoping it would make your day a little happier — just like <br>
+                                                                                                   you make mine every single day. 💖</span>
+        <span class="floating-deco" style="bottom:20%; right:15%;">Forever yours, <br>Harvey C. Dacillo 💖</span>
+        <div id="explosion-container"></div>
+        <div class="envelope" id="valentineEnvelope">
+            <div class="lid"></div>
+            <div class="letter">
+                <h4 style="font-family:'Caveat'; font-size: 2.2rem; color:var(--matcha-dark);">Dear Nuren,</h4>
+                <p>I love you so much. If ever I won’t be able to meet you on the 15th, consider this an invitation for you — even if I don’t know exactly when yet. I hope that someday soon, we can share that moment together.</p>
+                <button onclick="resetExplosion()" style="margin-top:20px; border:1px solid var(--matcha-dark); padding:8px 20px; cursor:pointer;">Re-play Love</button>
+            </div>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:2.5rem; z-index:11;">🪷</div>
+        </div>
+    </section>
+
+    <footer><p class="barcode">NUREN // THIS IS FOR YOU BABY!</p></footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+
+        function unwrapped() {
+            const welcome = document.getElementById('welcome-note');
+            welcome.style.opacity = '0';
+            setTimeout(() => {
+                welcome.style.visibility = 'hidden';
+                initScrollColor();
+            }, 1500);
+            music.volume = 0.3;
+            music.play();
+            musicBtn.style.display = 'flex';
+            musicBtn.innerHTML = '🔊';
+        }
+
+        function toggleMusic() {
+            if (music.paused) { music.play(); musicBtn.innerHTML = '🔊'; } 
+            else { music.pause(); musicBtn.innerHTML = '🔇'; }
+        }
+
+        /* NEW VIDEO TOGGLE LOGIC */
+        function toggleVideo(videoElement) {
+            const container = videoElement.closest('.video-box');
+            if (videoElement.paused) {
+                videoElement.play();
+                container.classList.add('playing');
+            } else {
+                videoElement.pause();
+                container.classList.remove('playing');
+            }
+        }
+
+        function initScrollColor() {
+            gsap.to("body", {
+                backgroundColor: "#4A5D3F", 
+                scrollTrigger: {
+                    trigger: ".editorial-container",
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    scrub: true
+                }
+            });
+        }
+
+        function createPetals() {
+            const body = document.body;
+            for(let i=0; i<25; i++) {
+                let p = document.createElement('div');
+                p.className = 'petal';
+                p.style.width = Math.random() * 25 + 15 + 'px';
+                p.style.height = Math.random() * 35 + 20 + 'px';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = Math.random() * 100 + 'vh';
+                body.appendChild(p);
+                gsap.to(p, {
+                    y: "105vh", x: "+=150", rotation: 720, duration: Math.random() * 10 + 8,
+                    repeat: -1, ease: "none", delay: Math.random() * 5
+                });
+            }
+        }
+        createPetals();
+
+        function playAllVideos() {
+            const videos = document.querySelectorAll('.cinema-video');
+            const cards = document.querySelectorAll('.movie-card');
+            let current = 0;
+            function playNext() {
+                if (current < videos.length) {
+                    cards.forEach(c => c.classList.remove('playing'));
+                    videos.forEach(v => v.pause());
+                    const targetVideo = videos[current];
+                    const targetCard = cards[current];
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    targetCard.classList.add('playing');
+                    targetVideo.play();
+                    targetVideo.onended = () => { current++; playNext(); };
+                } else {
+                    cards.forEach(c => c.classList.remove('playing'));
+                    document.getElementById('videoReel').scrollTo({ left: 0, behavior: 'smooth' });
+                }
+            }
+            playNext();
+        }
+
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('click', () => {
+                document.querySelectorAll('.tile').forEach(t => t.classList.remove('active'));
+                tile.classList.add('active');
+            });
+        });
+
+        const envelope = document.getElementById('valentineEnvelope');
+        const explosionBox = document.getElementById('explosion-container');
+        envelope.onclick = () => {
+            if(!envelope.classList.contains('open')) {
+                envelope.classList.add('open');
+                for(let i=0; i<16; i++) {
+                    const img = document.createElement('img');
+                    img.className = 'exp-photo';
+                    img.src = `https://picsum.photos/200/250?random=${i+500}`;
+                    explosionBox.appendChild(img);
+                    const angle = (i / 16) * Math.PI * 2;
+                    const radius = Math.min(window.innerWidth, window.innerHeight) / 2.2;
+                    gsap.to(img, { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, scale: 1, opacity: 1, duration: 1.8, delay: 0.2, rotation: gsap.utils.random(-40, 40), ease: "expo.out" });
+                }
+            }
+        };
+
+        function resetExplosion() {
+            event.stopPropagation();
+            gsap.to('.exp-photo', { x:0, y:0, scale:0, opacity:0, duration:0.6, onComplete: () => { explosionBox.innerHTML = ""; envelope.classList.remove('open'); }});
+        }
+
+        gsap.utils.toArray(".reveal").forEach(el => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 80, opacity: 0, duration: 1.5, ease: "power4.out" });
+        });
+
+        function toggleCinemaVideo(container) {
+            const video = container.querySelector('video');
+            const card = container.closest('.movie-card');
+            const allVideos = document.querySelectorAll('.cinema-video');
+            const allCards = document.querySelectorAll('.movie-card');
+
+            if (video.paused) {
+                // Pause all other cinema videos first
+                allVideos.forEach(v => v.pause());
+                allCards.forEach(c => c.classList.remove('playing'));
+
+                video.play();
+                card.classList.add('playing');
+            } else {
+                video.pause();
+                card.classList.remove('playing');
+            }
+        }
+
+        gsap.to(".card-scatter, .floating-deco", { y: -25, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: { each: 0.4 } });
+    </script>
+</body>
+</html>
